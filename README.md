@@ -62,7 +62,7 @@ If you'd rather wire it by hand (Claude Desktop, or pinning an absolute path):
 
 Restart the client, start a new chat, and you should see the `workato-dev` tools.
 
-## What it gives you (30 tools)
+## What it gives you (33 tools)
 
 **Recipes**
 
@@ -94,6 +94,11 @@ A Workato MCP server built on **API Platform** is an API collection exposed as M
 | `list_api_endpoints` | List a collection's endpoints — the MCP server's **tools**, with method/path/`active`/recipe |
 | `list_api_clients` | List API clients (the credentialed consumers) |
 | `list_api_access_profiles` | List access profiles (client ↔ collection scope bindings) |
+| `enable_api_endpoint` | **Activate** an endpoint (turn a tool ON). Start its recipe first. *Mutates a live MCP server.* |
+| `disable_api_endpoint` | Deactivate an endpoint (turn a tool OFF). *Mutates a live MCP server.* |
+| `create_api_collection` | Create a collection to expose as an MCP server (endpoints are still added in the UI) |
+
+> **Not yet covered — AI-Hub-native MCP servers.** Workato documents a server-management API at `/api/mcp/mcp_servers` (create/list servers, `assign_tools`, edit tool descriptions), but with the current Developer API token that path returns the HTML login page on both `www`/`app` hosts — i.e. the **API client lacks MCP scope** (or the feature isn't enabled on the plan). Grant the API client API-platform/MCP scope in the Workato UI and those tools become a quick follow-up. Endpoint enable/disable above works today because it lives on the standard `/api_endpoints` router.
 
 **Lookup & data tables**
 

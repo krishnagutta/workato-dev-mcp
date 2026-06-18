@@ -52,6 +52,13 @@ They never call the Workato API and need no token.
   workspace you're touching.
 - Treat any production/sandbox workspace as off-limits unless the user explicitly approves
   the specific action. Prefer dev/impl workspaces.
+- `enable_api_endpoint` / `disable_api_endpoint` change a **live MCP server's tool surface** —
+  enabling an endpoint exposes that tool to every client of the collection. Name the endpoint
+  and get explicit user approval before calling; enabling also requires the backing recipe to
+  be started first. Never set Workato sharing/permissions or access profiles programmatically.
+- The AI-Hub MCP-server API (`/api/mcp/mcp_servers`, assign_tools, etc.) is **not wired up** —
+  the API client currently lacks MCP scope (the path returns the login page). Don't add tools
+  against it until the scope is granted and a live GET returns JSON.
 
 ## The edit loop (always)
 

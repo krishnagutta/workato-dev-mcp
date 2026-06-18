@@ -297,6 +297,19 @@ def list_api_access_profiles():
                   for p in profiles])
 
 
+def enable_api_endpoint(api_endpoint_id):
+    """Activate an endpoint (turns the tool ON). The backing recipe must be started first or this fails."""
+    return _dump(_request("PUT", f"/api_endpoints/{api_endpoint_id}/enable"))
+
+
+def disable_api_endpoint(api_endpoint_id):
+    return _dump(_request("PUT", f"/api_endpoints/{api_endpoint_id}/disable"))
+
+
+def create_api_collection(name, project_id):
+    return _dump(_request("POST", "/api_collections", params={"project_id": project_id}, body={"name": name}))
+
+
 def log_learning(title, category, trigger, pattern, example=None, promote_to="recipe_tips"):
     """Append a discovered gotcha to learnings.md. Local file write — no Workato API call."""
     if not os.path.exists(LEARNINGS_PATH):
@@ -427,6 +440,19 @@ TOOLS = [
      "List API clients — the credentialed consumers that call API-Platform endpoints.", _schema({})),
     ("list_api_access_profiles", list_api_access_profiles,
      "List API access profiles — scope/auth bindings between API clients and collections.", _schema({})),
+    ("enable_api_endpoint", enable_api_endpoint,
+     "Activate an API-Platform endpoint — turns an inactive tool ON in its MCP-exposed collection. "
+     "PREREQUISITE: start the backing recipe (flow_id) first, or enable fails. This mutates a LIVE MCP "
+     "server's tool surface — confirm the endpoint id and intent with the user before calling.",
+     _schema({"api_endpoint_id": _INT}, ["api_endpoint_id"])),
+    ("disable_api_endpoint", disable_api_endpoint,
+     "Deactivate an API-Platform endpoint — turns a tool OFF so MCP clients can no longer call it. "
+     "Mutates a live MCP server's tool surface — confirm with the user first.",
+     _schema({"api_endpoint_id": _INT}, ["api_endpoint_id"])),
+    ("create_api_collection", create_api_collection,
+     "Create an API collection (which can then be exposed as a Workato MCP server). Needs name + project_id. "
+     "Note: endpoints themselves are added in the UI — there is no create-endpoint Developer API.",
+     _schema({"name": _STR, "project_id": _INT}, ["name", "project_id"])),
     ("log_learning", log_learning,
      "Append a newly discovered Workato recipe/API gotcha to learnings.md (the team intake queue). "
      "CALL THIS AUTOMATICALLY when you hit a non-obvious behavior NOT already in workato_recipe_tips — "
