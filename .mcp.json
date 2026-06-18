@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "workato-dev": {
+      "command": "python3",
+      "args": ["server.py"],
+      "env": {
+        "WORKATO_TOKEN": "${WORKATO_TOKEN}",
+        "WORKATO_API_BASE": "${WORKATO_API_BASE:-https://www.workato.com/api}"
+      }
+    }
+  }
+}

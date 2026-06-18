@@ -1,0 +1,2 @@
+# No third-party dependencies — standard library only (Python 3.8+).
+# Nothing to install. Just run: WORKATO_TOKEN=... python3 server.py
